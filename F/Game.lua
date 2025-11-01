@@ -22,6 +22,8 @@ local Events = require 'F.event.EventManager'
 local Game = {}
 Game.__index = Game
 Game.screen_width, Game.screen_height = love.graphics.getDimensions()
+Game.tile_size  = 16
+Game.tile_scale = 4
 
 Game.states = {
     playing   = 'playing',
