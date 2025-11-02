@@ -3,6 +3,7 @@ local Game = require("F.Game")
 local grid_width  = 20
 local grid_height = 20
 
+
 function GridCreate(x,y)
 	local grid = {}
 	for xx = 1, x, 1 do
@@ -26,6 +27,26 @@ end
 local grid = GridCreate(grid_width, grid_height)
 local px, py = 5,5
 
+function GridBlocks(grid)
+	local blocks = {}
+	local blockCount = love.math.random(3,40)
+
+	for i = 1, blockCount, 1 do
+		local bx = love.math.random(1, grid_width)
+		local by = love.math.random(1, grid_height)
+		local Block = {
+			x = bx * (Game.tile_size * Game.tile_scale),
+			y = by * (Game.tile_size * Game.tile_scale),
+			width  = Game.tile_scale * Game.tile_size,
+			height = Game.tile_scale * Game.tile_size,
+			style = 'fill'
+		}
+		table.insert(blocks, Block)
+	end
+	return blocks
+end
+
+local blocks = GridBlocks(grid)
 
 Game.events:emit("preload")
 
@@ -52,6 +73,16 @@ function love.draw()
 				cell.height
 			)
 		end
+	end
+
+	for _, block in ipairs(blocks) do
+			love.graphics.rectangle(
+				block.style,
+				block.x,
+				block.y,
+				block.width,
+				block.height
+			)
 	end
 
 	love.graphics.rectangle(
