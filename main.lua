@@ -2,8 +2,8 @@ local Game = require("F.Game")
 local Color = require("F.Color")
 local Math = require("F.Math")
 
-local grid_width  = 20
-local grid_height = 20
+local grid_width  = 10
+local grid_height = 10
 
 
 
@@ -42,25 +42,23 @@ function GridBlocks(w, h)
 			local bx = love.math.random(1, grid_width)
 			local by = love.math.random(1, grid_height)
 			local Block = {
-				x = bx,
-				y = by,
-				tx = bx * (Game.tile_size * Game.tile_scale),
-				ty = by * (Game.tile_size * Game.tile_scale),
+				x      = bx,
+				y      = by,
+				tx     = bx * (Game.tile_size * Game.tile_scale),
+				ty     = by * (Game.tile_size * Game.tile_scale),
 				width  = Game.tile_scale * Game.tile_size,
 				height = Game.tile_scale * Game.tile_size,
-				style = 'fill'
+				style  = 'fill'
 			}
 			table.insert(row,Block)
 		end
 			table.insert(blocks, row)
 	end
 
-	for i = 1, blockCount, 1 do
-	end
 	return blocks
 end
 
-local blocks = GridBlocks(grid)
+local blocks = GridBlocks(grid_width, grid_height)
 
 Game.events:emit("preload")
 
@@ -89,17 +87,6 @@ function love.draw()
 		end
 	end
 
-	DrawColor(255,0,0,255)
-	for _, block in ipairs(blocks) do
-			love.graphics.rectangle(
-				block.style,
-				block.tx,
-				block.ty,
-				block.width,
-				block.height
-			)
-	end
-	ResetDrawColor()
 
 	love.graphics.rectangle(
 		'fill',
@@ -139,9 +126,6 @@ function love.keypressed(key, scancode, isrepeat)
 	if key == "d" then
 		if px < grid_width then 
 			px = px + 1
-			local block = blocks[px + py]
-			print(px,py, block.x, block.y)
-			block.style = 'line'
 		end
 	end
 
