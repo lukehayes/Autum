@@ -1,15 +1,16 @@
 local Game = require("F.Game")
 
-
+local grid_width  = 20
+local grid_height = 20
 
 function GridCreate(x,y)
 	local grid = {}
-	for x = 1, x, 1 do
+	for xx = 1, x, 1 do
 		local row = {}
-		for y = 1, y, 1 do
+		for yy = 1, y, 1 do
 			local cell  = {}
-			cell.x      = x * (Game.tile_size * Game.tile_scale)
-			cell.y      = y * (Game.tile_size * Game.tile_scale)
+			cell.x      = xx * (Game.tile_size * Game.tile_scale)
+			cell.y      = yy * (Game.tile_size * Game.tile_scale)
 			cell.width  = Game.tile_scale * Game.tile_size
 			cell.height = Game.tile_scale * Game.tile_size
 			cell.style  = 'line'
@@ -22,7 +23,7 @@ function GridCreate(x,y)
 end
 
 
-local grid = GridCreate(11,11)
+local grid = GridCreate(grid_width, grid_height)
 local px, py = 5,5
 
 
@@ -51,17 +52,15 @@ function love.draw()
 				cell.height
 			)
 		end
-
-
-			love.graphics.rectangle(
-				'fill',
-				Game.tile_size * px,
-				Game.tile_size * py,
-				Game.tile_size,
-				Game.tile_size
-			)
-
 	end
+
+	love.graphics.rectangle(
+		'fill',
+		Game.tile_size * px,
+		Game.tile_size * py,
+		Game.tile_size,
+		Game.tile_size
+	)
 
 	Game.events:emit("postrender")
 end
@@ -73,20 +72,29 @@ function love.keypressed(key, scancode, isrepeat)
 
 	-- Player movement
 	if key == "w" then
-		py = py - 1
+		if py >= 2 then
+			py = py - 1
+		end
 	end
 
 	if key == "s" then
-		py = py +1
+		if py < grid_height then 
+			py = py + 1
+		end
 	end
 
 	if key == "a" then
-		px = px - 1
+		if px >= 2 then
+			px = px - 1
+		end
 	end
 
 	if key == "d" then
-		px = px +1
+		if px < grid_width then 
+			px = px + 1
+		end
 	end
+
 	-- End Player movement
 
 	if key == "escape" then
