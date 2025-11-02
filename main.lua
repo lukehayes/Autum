@@ -7,12 +7,12 @@ function GridCreate(x,y)
 	for x = 1, x, 1 do
 		local row = {}
 		for y = 1, y, 1 do
-			local cell = {}
-			cell.x = Game.tile_size * x
-			cell.y = Game.tile_size * y
-			cell.width = Game.tile_scale * Game.tile_size
+			local cell  = {}
+			cell.x      = x * (Game.tile_size * Game.tile_scale)
+			cell.y      = y * (Game.tile_size * Game.tile_scale)
+			cell.width  = Game.tile_scale * Game.tile_size
 			cell.height = Game.tile_scale * Game.tile_size
-			cell.style = 'line'
+			cell.style  = 'line'
 
 			table.insert(row,cell)
 		end
