@@ -5,8 +5,6 @@ local Math = require("F.Math")
 local grid_width  = 10
 local grid_height = 10
 
-
-
 function GridCreate(x,y)
 	local grid = {}
 	for xx = 1, x, 1 do
@@ -34,25 +32,29 @@ local px, py = 5,5
 
 function GridBlocks(w, h)
 	local blocks = {}
-	local hasBlock = love.math.random(0,1)
 
 	for xx = 1, w, 1 do
-		local row = {}
+
+		blocks[xx] = {}
+
 		for yy = 1, h, 1 do
-			local bx = love.math.random(1, grid_width)
-			local by = love.math.random(1, grid_height)
-			local Block = {
-				x      = bx,
-				y      = by,
-				tx     = bx * (Game.tile_size * Game.tile_scale),
-				ty     = by * (Game.tile_size * Game.tile_scale),
-				width  = Game.tile_scale * Game.tile_size,
-				height = Game.tile_scale * Game.tile_size,
-				style  = 'fill'
-			}
-			table.insert(row,Block)
+			if OneIn(3) then
+
+				local Block = {}
+				Block.x       = xx
+				Block.y       = yy
+				Block.tx      = xx * (Game.tile_size * Game.tile_scale)
+				Block.ty      = yy * (Game.tile_size * Game.tile_scale)
+				Block.width   = Game.tile_scale * Game.tile_size
+				Block.height  = Game.tile_scale * Game.tile_size
+				Block.style   = 'fill'
+
+				print("Placing at: ".. xx .. " " .. yy)
+				blocks[xx][yy] = Block
+			else
+				blocks[xx][yy] = nil
+			end
 		end
-			table.insert(blocks, row)
 	end
 
 	return blocks
@@ -83,6 +85,18 @@ function love.draw()
 				cell.ty,
 				cell.width,
 				cell.height
+			)
+		end
+	end
+
+	for _, row in ipairs(blocks) do
+		for _, block in ipairs(row) do
+			love.graphics.rectangle(
+				block.style,
+				block.tx,
+				block.ty,
+				block.width,
+				block.height
 			)
 		end
 	end
