@@ -19,6 +19,7 @@ function GridCreate(x,y)
 				cell.ty      = yy * (Game.tile_size * Game.tile_scale)
 				cell.width   = Game.tile_scale * Game.tile_size
 				cell.height  = Game.tile_scale * Game.tile_size
+				cell.solid   = true
 				cell.style   = 'fill'
 			else
 				cell.x       = xx
@@ -27,6 +28,7 @@ function GridCreate(x,y)
 				cell.ty      = yy * (Game.tile_size * Game.tile_scale)
 				cell.width   = Game.tile_scale * Game.tile_size
 				cell.height  = Game.tile_scale * Game.tile_size
+				cell.solid   = false
 				cell.style   = 'line'
 			end
 			table.insert(row,cell)
@@ -84,28 +86,44 @@ function love.keypressed(key, scancode, isrepeat)
 		Game.events:emit("space_pressed")
 	end
 
+	local canMove = true
+
+
 	-- Player movement
 	if key == "w" then
+
 		if py >= 2 then
-			py = py - 1
+			local cell = grid[px][py-1]
+			if cell.solid ~= true then
+				py = py - 1
+			end
 		end
 	end
 
 	if key == "s" then
 		if py < grid_height then 
-			py = py + 1
+			local cell = grid[px][py+1]
+			if cell.solid ~= true then
+				py = py + 1
+			end
 		end
 	end
 
 	if key == "a" then
 		if px >= 2 then
-			px = px - 1
+			local cell = grid[px-1][py]
+			if cell.solid ~= true then
+				px = px - 1
+			end
 		end
 	end
 
 	if key == "d" then
 		if px < grid_width then 
-			px = px + 1
+			local cell = grid[px+1][py]
+			if cell.solid ~= true then
+				px = px + 1
+			end
 		end
 	end
 
