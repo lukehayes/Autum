@@ -5,20 +5,30 @@ local Math = require("F.Math")
 local grid_width  = 10
 local grid_height = 10
 
+
 function GridCreate(x,y)
 	local grid = {}
 	for xx = 1, x, 1 do
 		local row = {}
 		for yy = 1, y, 1 do
 			local cell   = {}
-			cell.x       = xx
-			cell.y       = yy
-			cell.tx      = xx * (Game.tile_size * Game.tile_scale)
-			cell.ty      = yy * (Game.tile_size * Game.tile_scale)
-			cell.width   = Game.tile_scale * Game.tile_size
-			cell.height  = Game.tile_scale * Game.tile_size
-			cell.style   = 'line'
-
+			if(OneIn(10)) then
+				cell.x       = xx
+				cell.y       = yy
+				cell.tx      = xx * (Game.tile_size * Game.tile_scale)
+				cell.ty      = yy * (Game.tile_size * Game.tile_scale)
+				cell.width   = Game.tile_scale * Game.tile_size
+				cell.height  = Game.tile_scale * Game.tile_size
+				cell.style   = 'fill'
+			else
+				cell.x       = xx
+				cell.y       = yy
+				cell.tx      = xx * (Game.tile_size * Game.tile_scale)
+				cell.ty      = yy * (Game.tile_size * Game.tile_scale)
+				cell.width   = Game.tile_scale * Game.tile_size
+				cell.height  = Game.tile_scale * Game.tile_size
+				cell.style   = 'line'
+			end
 			table.insert(row,cell)
 		end
 			table.insert(grid, row)
@@ -29,38 +39,6 @@ end
 
 local grid = GridCreate(grid_width, grid_height)
 local px, py = 5,5
-
-function GridBlocks(w, h)
-	local blocks = {}
-
-	for xx = 1, w, 1 do
-
-		blocks[xx] = {}
-
-		for yy = 1, h, 1 do
-			if OneIn(3) then
-
-				local Block = {}
-				Block.x       = xx
-				Block.y       = yy
-				Block.tx      = xx * (Game.tile_size * Game.tile_scale)
-				Block.ty      = yy * (Game.tile_size * Game.tile_scale)
-				Block.width   = Game.tile_scale * Game.tile_size
-				Block.height  = Game.tile_scale * Game.tile_size
-				Block.style   = 'fill'
-
-				print("Placing at: ".. xx .. " " .. yy)
-				blocks[xx][yy] = Block
-			else
-				blocks[xx][yy] = nil
-			end
-		end
-	end
-
-	return blocks
-end
-
-local blocks = GridBlocks(grid_width, grid_height)
 
 Game.events:emit("preload")
 
@@ -85,18 +63,6 @@ function love.draw()
 				cell.ty,
 				cell.width,
 				cell.height
-			)
-		end
-	end
-
-	for _, row in ipairs(blocks) do
-		for _, block in ipairs(row) do
-			love.graphics.rectangle(
-				block.style,
-				block.tx,
-				block.ty,
-				block.width,
-				block.height
 			)
 		end
 	end
