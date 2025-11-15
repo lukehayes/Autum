@@ -21,6 +21,7 @@ function GridCreate(x,y)
 				cell.height  = Game.tile_scale * Game.tile_size
 				cell.solid   = true
 				cell.style   = 'fill'
+				cell.color = {r = 0.5, g = 0.5, b = 0.5, a = 1}
 			else
 				cell.x       = xx
 				cell.y       = yy
@@ -30,6 +31,7 @@ function GridCreate(x,y)
 				cell.height  = Game.tile_scale * Game.tile_size
 				cell.solid   = false
 				cell.style   = 'line'
+				cell.color = {r = 1, g = 1, b = 1, a = 1}
 			end
 			table.insert(row,cell)
 		end
@@ -59,6 +61,7 @@ function love.draw()
 
 	for _, row in ipairs(grid) do
 		for _, cell in ipairs(row) do
+			DrawColor(cell.color.r, cell.color.g, cell.color.b, cell.color.a)
 			love.graphics.rectangle(
 				cell.style,
 				cell.tx,
@@ -66,6 +69,7 @@ function love.draw()
 				cell.width,
 				cell.height
 			)
+			ResetDrawColor()
 		end
 	end
 
